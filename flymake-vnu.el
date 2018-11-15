@@ -1,4 +1,4 @@
-;;; flymake-vnu.el --- Flymake extension for Vmu. -*- lexical-binding: t -*-
+;;; flymake-vnu.el --- Flymake extension for the v.Nu HTML checker. -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2018 Stefan Kuznetsov
 
@@ -43,13 +43,17 @@
 ;; Adapted from the sample backend
 ;; https://www.gnu.org/software/emacs/manual/html_node/flymake/Backend-functions.html#Backend-functions
 (defun flymake-vnu (report-fn &rest _args)
-  "VNU backend for Flymake.  Check for problems, then call REPORT-FN with results."
+  "VNU backend for Flymake.  Check for problems, then call REPORT-FN with the results."
 
   (unless (executable-find "java")
     (error "Cannot find the java executable"))
 
   (unless (and flymake-vnu-jar (file-exists-p flymake-vnu-jar))
     (error "Cannot find the vnu checker jar file"))
+
+  ;; Kill any process launched by an earlier check.
+  (when (process-live-p flymake-vnu--process)
+    (kill-process flymake-vnu--process))
 
   (let* ((source (current-buffer))
 	 (filename (buffer-file-name source)))
@@ -75,7 +79,7 @@
                        while (search-forward-regexp
                               ;; Example output:
                               ;; FILEPATH/test.html":7.3-7.7: error: Unclosed element “bdy”.
-                              "^.*html\":\\([0-9]+\\)\\.\\([0-9]+\\)-\\([0-9]+\\)\\.\\([0-9]+\\):\\(.*\\):\\(.*\\)$"
+                              "^.*html\":\\([0-9]+\\)\\.\\([0-9]+\\)-\\([0-9]+\\)\\.\\([0-9]+\\):\\([A-z ]+\\):\\(.*\\)$"
                               nil t)
 		       for severity = (match-string 5)
                        for msg = (match-string 6)
