@@ -32,9 +32,6 @@
 
 (require 'flymake)
 
-;;; Flymake
-
-
 (defcustom flymake-vnu-jar nil
   "Location of the vnu executable."
   :type '(file :must-match t)
@@ -43,10 +40,11 @@
 (defvar-local flymake-vnu--process nil
   "Buffer-local process started for linting the buffer.")
 
-;; Pretty much just copy pasted from the example backend
+;; Adapted from the sample backend
 ;; https://www.gnu.org/software/emacs/manual/html_node/flymake/Backend-functions.html#Backend-functions
-(defun vnu-flymake (report-fn &rest _args)
+(defun flymake-vnu (report-fn &rest _args)
   "VNU backend for Flymake.  Check for problems, then call REPORT-FN with results."
+
   (unless (executable-find "java")
     (error "Cannot find the java executable"))
 
@@ -55,6 +53,7 @@
 
   (let* ((source (current-buffer))
 	 (filename (buffer-file-name source)))
+
     (save-restriction
       (widen)
       (setq
@@ -108,7 +107,7 @@
 
 (defun flymake-vnu-add-hook ()
   "Add `flymake-vnu-lint' to `flymake-diagnostic-functions'."
-  (add-hook 'flymake-diagnostic-functions 'vnu-flymake nil t))
+  (add-hook 'flymake-diagnostic-functions 'flymake-vnu nil t))
 
 (provide 'flymake-vnu)
 ;;; flymake-vnu.el ends here
