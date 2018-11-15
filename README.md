@@ -4,9 +4,7 @@ A [v. NU HTML checker](https://validator.github.io/validator/) flymake backend.
 
 # Installation
 
-First ensure that you have java installed and [download the NU HTML checker](https://github.com/validator/validator/releases/).
-
-
+Ensure that you have java installed and download the [NU HTML checker](https://github.com/validator/validator/releases/). Then, customize the `flymake-vnu-jar` variable to the location of the downloaded vnu.jar file.
 
 ## Usage
 
