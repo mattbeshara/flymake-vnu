@@ -26,6 +26,8 @@
 
 ;;; Commentary:
 ;; Flymake extension that adds support for the v.NU HTML validator.
+;;
+;;
 ;; (with-eval-after-load 'flymake
 ;;   (flymake-vnu-setup))
 ;;; Code:
@@ -56,7 +58,7 @@
     (kill-process flymake-vnu--process))
 
   (let* ((source (current-buffer))
-	 (filename (buffer-file-name source)))
+         (filename (buffer-file-name source)))
 
     (save-restriction
       (widen)
@@ -81,13 +83,13 @@
                               ;; FILEPATH/test.html":7.3-7.7: error: Unclosed element “bdy”.
                               "^.*html\":\\([0-9]+\\)\\.\\([0-9]+\\)-\\([0-9]+\\)\\.\\([0-9]+\\):\\([A-z ]+\\):\\(.*\\)$"
                               nil t)
-		       for severity = (match-string 5)
+                       for severity = (match-string 5)
                        for msg = (match-string 6)
                        ;; TODO: Provide a precise diag region
                        for (beg . end) = (flymake-diag-region
                                           source
                                           (string-to-number (match-string 1))
-					  (string-to-number (match-string 2)))
+                                          (string-to-number (match-string 2)))
                        for type = (if (string-match "warning" severity)
                                       :warning
                                     :error)
