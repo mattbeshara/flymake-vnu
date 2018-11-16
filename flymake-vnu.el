@@ -1,4 +1,4 @@
-;;; flymake-vnu.el --- Flymake extension for the v.Nu HTML checker. -*- lexical-binding: t -*-
+;;; flymake-vnu.el --- Flymake extension for the v.Nu HTML validator. -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2018 Stefan Kuznetsov
 
@@ -7,7 +7,7 @@
 ;; URL: https://github.com/theneosloth
 ;; Version: 0.1
 ;; Package-Requires: ((emacs "26.1"))
-;; Keywords: languages vnu html flymake
+;; Keywords: languages
 
 ;; This file is not part of GNU Emacs.
 
@@ -25,7 +25,7 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-;; Flymake extension for Vnu.
+;; Flymake extension that adds support for the v.NU HTML validator.
 ;; (with-eval-after-load 'flymake
 ;;   (flymake-vnu-setup))
 ;;; Code:
