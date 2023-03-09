@@ -36,6 +36,22 @@
   :type '(file :must-match t)
   :group 'flymake-vnu)
 
+(defcustom flymake-vnu-options nil
+  "Options to pass to the vnu executable.
+The following options are available:
+--errors-only --Werror --exit-zero-always --stdout
+--asciiquotes --user-agent USER_AGENT --no-langdetect
+--no-stream --filterfile FILENAME --filterpattern PATTERN
+--css --skip-non-css --also-check-css
+--svg --skip-non-svg --also-check-svg
+--xml --html --skip-non-html --format gnu|xml|json|text
+--help --verbose --version
+
+The options are documented at the official website:
+http://validator.github.io/validator/"
+  :type '(repeat string)
+  :group 'flymake-vnu)
+
 (defvar-local flymake-vnu--process nil
   "Buffer-local process started for linting the buffer.")
 
@@ -66,7 +82,7 @@
         :noquery t
         :connection-type 'pipe
         :buffer (generate-new-buffer " *vnu-flymake*")
-        :command (list "java" "-jar" (expand-file-name flymake-vnu-jar) filename)
+        :command `("java" "-jar" ,(expand-file-name flymake-vnu-jar) ,@flymake-vnu-options ,filename)
         :sentinel
         (lambda (proc _event)
           (when (eq 'exit (process-status proc))
